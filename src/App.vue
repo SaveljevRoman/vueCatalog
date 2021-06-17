@@ -1,18 +1,49 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Catalog
+        v-for="(product, id) of ProductList.catalog"
+        v-bind:product="product"
+        v-bind:key="id"
+    />
+    <button
+        class="button__state"
+        v-on:click="isShowJson = !isShowJson"
+    >{{ isShowJson ? "Скрыть" : "Показать" }} состояние JSON
+    </button>
+    <button
+        v-on:click="resetStateJson()"
+    >
+      Сбросить состояние JSON
+    </button>
+    <pre v-if="isShowJson">
+      {{ ProductList }}
+    </pre>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Catalog from "./components/Catalog";
+import ProductList from "./ProductList";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    Catalog,
+  },
+
+  methods: {
+    resetStateJson() {
+      Object.assign(this.$data.ProductList, ProductList())
+    },
+  },
+
+  data() {
+    return {
+      ProductList: ProductList(),
+      isShowJson: false,
+
+    }
+  },
 }
 </script>
 
@@ -21,8 +52,26 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  border: #2c3e50 solid 2px;
+  color: #2c3e50;
+  font-weight: bold;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+button:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.button__state {
+  min-width: 210px;
+  border-radius: 10px;
 }
 </style>
